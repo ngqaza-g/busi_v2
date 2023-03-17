@@ -2,7 +2,7 @@ const User = require('../../models/User');
 const error_msg = require('../error_message');
 
 async function register(req, res, next){
-    if(!req.user){
+    if(req.user && req.user.role === "admin"){
         const {name, username, email, password} = req.body;
         try{
             await User.create({
@@ -11,9 +11,9 @@ async function register(req, res, next){
                 email,
                 password
             });
-            next();
+            res.render('register', {error: null, user: req.user, success : "User registered"});
         }catch(error){
-            res.render('dashboard', {error: error_msg(error)});
+            res.render('register', {error: error_msg(error), success : null, user: req.user});
         }
     }
 }

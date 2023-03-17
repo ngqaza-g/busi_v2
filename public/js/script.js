@@ -6,8 +6,7 @@ client.onMessageArrived = onMessageArrived;
 
 client.connect({onSuccess:()=>{
     console.log("onConnect");
-    client.subscribe("World");
-
+    client.subscribe("updates");
     // Sending a message 
     message = new Paho.MQTT.Message("Hello");
     message.destinationName = "World";
@@ -22,16 +21,31 @@ function onConnectionLost(responseObject) {
 
 function onMessageArrived(message) {
   console.log("onMessageArrived:"+message.payloadString);
+  try{
+    const {temperature, humidity, smoke_led, fire_led, temperature_led, humidity_led} = JSON.parse(message.payloadString);
+
+    change_led_status("smoke_led", smoke_led);
+    change_led_status("fire_led", fire_led);
+    change_led_status("humidity_led", humidity_led);
+    change_led_status("temperature_led", temperature_led);
+    temperature_gauge.setValue(Number(temperature))
+    humidity_gauge.setValue(Number(humidity))
+    // console.log("temperature: ", temperature)
+    // console.log("humidity: ", humidity)
+
+  }catch(e){
+    console.error(e)
+  }
 }
 
 
-const temperature = Gauge(document.getElementById("temperature"), {
+var temperature_gauge = Gauge(document.getElementById("temperature"), {
     max: 100,
     // custom label renderer
     label: function(value) {
       return Math.round(value) + "\u00B0" + "C";
     },
-    value:  10,
+    value:  0,
 
     color: function(value) {
       if(value < 20) {
@@ -46,13 +60,13 @@ const temperature = Gauge(document.getElementById("temperature"), {
     }
 });
 
-const humidity = Gauge(document.getElementById("humidity"), {
+var humidity_gauge = Gauge(document.getElementById("humidity"), {
     max: 100,
     // custom label renderer
     label: function(value) {
       return Math.round(value) + "%";
     },
-    value: 50,
+    value: 0,
     // Custom dial colors (Optional)
     color: function(value) {
       if(value < 20) {
@@ -67,20 +81,18 @@ const humidity = Gauge(document.getElementById("humidity"), {
     }
 });
 
-let _status = false;
-document.getElementById('led_on').addEventListener('click', function(){
-  const led = document.getElementById('led');
-  const inner_led = led.children[0].children[0];
-  led.classList.add("led_on");
+change_led_status("smoke_led", false)
 
-  _status = ! _status;
-
-
-  if(_status){
+function change_led_status(led_id, _status){
+    const led = document.getElementById(led_id);
+    const inner_led = led.children[0].children[0];
     led.classList.add("led_on");
-    inner_led.style.opacity = 1;
-  }else{
-    led.classList.remove("led_on");
-    inner_led.style.opacity = 0.1;
-  }
-})
+
+    if(_status){
+      led.classList.add("led_on");
+      inner_led.style.opacity = 1;
+    }else{
+      led.classList.remove("led_on");
+      inner_led.style.opacity = 0.1;
+    }
+}

@@ -3,11 +3,22 @@
 <%- include('partials/head', {title: "Register"}) %> 
 
 <body>
+    <%- include('partials/navbar', {active: "Register", user: user}) %>
     <div class="container flex-grow-1">
         <div class="my-3">
-            <h3 class="text-center">Sign Up</h3>
+            <h3 class="text-center">Sign Up A User</h3>
         </div>
         <div class="box">
+            <% if (success) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= success %>
+                  </div>
+            <% } %>
+            <% if (error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                  </div>
+            <% } %>
             <form method="post">
 
                 <div class="mb-3">
@@ -28,8 +39,7 @@
                 </div>
     
                 <div class="d-grid gap-2">
-                    <button class="btn btn-outline-success">Register</button>
-                    <a href="/login" class="btn btn-outline-primary">Login</a>
+                    <button class="btn btn-success">Register</button>
                 </div>
             </form>
         </div>

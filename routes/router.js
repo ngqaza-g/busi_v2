@@ -15,7 +15,7 @@ router.get('/login', validate_token, (req, res)=>{
 });
 
 router.get('/register', validate_token, (req, res)=>{
-    req.user ? res.redirect('/dashboard') : res.render('register', {error: null});
+    req.user ? req.user.role === "admin" ?  res.render('register', {error: null, user: req.user, success: null}) : res.redirect('dashboard') : res.redirect('login');
 });
 
 router.get('/dashboard', validate_token, (req, res)=>{
@@ -30,7 +30,7 @@ router.get('/logout', validate_token, (req, res)=>{
 });
 
 router.post('/login', validate_token, login);
-router.post('/register', validate_token, register, login);
+router.post('/register', validate_token, register);
 
 
 module.exports = router;
