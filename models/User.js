@@ -78,6 +78,16 @@ userSchema.statics.findByEmailOrUsername = function(info){
 }
 
 
+userSchema.statics.getEmails = async function(){
+    const users = await this.find();
+
+    const emails = users.map(user => user.email);
+
+    return emails;
+
+}
+
+
 userSchema.methods.changePassword = async function(newPassword, oldPassword){
     const isOldPassCorrect = await bcrypt.compare(oldPassword, this.password);
     if(isOldPassCorrect){

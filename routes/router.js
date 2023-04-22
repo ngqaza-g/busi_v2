@@ -31,6 +31,7 @@ router.get('/logout', validate_token, (req, res)=>{
 
 router.post('/login', validate_token, login);
 router.post('/register', validate_token, register);
+router.get('/trends')
 
 
 module.exports = router;

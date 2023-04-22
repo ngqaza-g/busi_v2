@@ -22,6 +22,7 @@ mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true})
     console.log('Connected to DB');
     await create_admin();
     const pythonProcess = spawn('python',["app.py"]);
+    require('./modules/mqttClient');
     app.listen(PORT, ()=> console.log(`Server started on port: ${PORT} \nGo to http://127.0.0.1:${PORT}`));
 })
 .catch(error =>{
