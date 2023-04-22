@@ -14,12 +14,11 @@ mqttClient.on('connect', ()=>{
 mqttClient.on('message', async (topic, message)=>{
 
     if(topic == "updates"){
-        console.log(message.toString())
         try{
             const data = JSON.parse(message.toString());
-            const { temperature, humidity, smoke } = data;
+            const { temperature, humidity, smoke_led } = data;
             await handleAlarms(data);
-            await Data.create({temperature, humidity, smoke});
+            await Data.create({temperature, humidity, smoke: smoke_led});
         }catch(e){
             console.log("An error occured");
             console.log(e);
@@ -38,7 +37,7 @@ async function handleAlarms(data){
         let msg = "";
         const emails = await User.getEmails();
         if(temperature_led){
-            msg += `Temeperature too high, value ${temperature}\n`
+            msg += `Temperature too high, value ${temperature}\n`
             await Alarm.create({alarm: msg});
         }
         if(humidity_led){

@@ -1,4 +1,6 @@
-client = new Paho.MQTT.Client('127.0.0.1', Number(9001), "busi_website_" + Math.floor(Math.random() * 10000));
+const fan_switch = document.getElementById('fan_switch');
+
+var client = new Paho.MQTT.Client('127.0.0.1', Number(9001), "busi_website_" + Math.floor(Math.random() * 10000));
 
 // set callback handlers
 client.onConnectionLost = onConnectionLost;
@@ -22,7 +24,7 @@ function onConnectionLost(responseObject) {
 function onMessageArrived(message) {
   console.log("onMessageArrived:"+message.payloadString);
   try{
-    const {temperature, humidity, smoke_led, fire_led, temperature_led, humidity_led} = JSON.parse(message.payloadString);
+    const {temperature, humidity, smoke_led, fan, temperature_led, humidity_led} = JSON.parse(message.payloadString);
 
     change_led_status("smoke_led", smoke_led);
     change_led_status("fire_led", fire_led);
