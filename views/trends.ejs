@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', {title: "Trends"}) %> 
+<body>
+    <div class="flex-grow-1">
+      <%- include('partials/navbar') %> 
+
+
+      <div class="container">
+        <div class="row ">
+            <div class="col">
+                <h4 class="text-center">Temperature</h4>
+                <canvas id="temperature"></canvas>
+            </div>
+            <div class="col">
+                <h4 class="text-center">Humidity</h4>
+                <canvas id="humidity"></canvas>
+            </div>
+        </div>
+      </div>
+    </div>
+    <%- include('partials/footer') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/trends_client.js"></script>
+</body>
+</html>
