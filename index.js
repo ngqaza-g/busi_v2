@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const spawn = require("child_process").spawn;
 const create_admin = require('./modules/create_admin');
 require('dotenv').config();
 
@@ -20,6 +21,11 @@ mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true})
 .then(async ()=>{
     console.log('Connected to DB');
     await create_admin();
+    const pythonProcess = spawn('python',["app.py"]);
+    pythonProcess.stdout.on('data', (data)=>{
+        console.log(data.toString());
+    })
+    require('./modules/mqttClient');
     app.listen(PORT, ()=> console.log(`Server started on port: ${PORT} \nGo to http://127.0.0.1:${PORT}`));
 })
 .catch(error =>{
