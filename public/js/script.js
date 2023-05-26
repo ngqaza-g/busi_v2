@@ -1,4 +1,5 @@
 const fan_switch = document.getElementById('fan_switch');
+const manual_control = document.getElementById('manual_control');
 
 var client = new Paho.MQTT.Client('127.0.0.1', Number(9001), "busi_website_" + Math.floor(Math.random() * 10000));
 
@@ -30,8 +31,8 @@ function onMessageArrived(message) {
     change_led_status("fire_led", fire_led);
     change_led_status("humidity_led", humidity_led);
     change_led_status("temperature_led", temperature_led);
-    temperature_gauge.setValue(Number(temperature))
-    humidity_gauge.setValue(Number(humidity))
+    temperature_gauge.setValue(Number(temperature));
+    humidity_gauge.setValue(Number(humidity));
     // console.log("temperature: ", temperature)
     // console.log("humidity: ", humidity)
 

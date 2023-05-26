@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', {title: "Settings"}) %> 
+
+<body>
+    <%- include('partials/navbar', {active: "Register", user: user}) %>
+    <div class="container flex-grow-1">
+        <div class="my-3">
+            <h2 class="text-center">Settings</h2>
+        </div>
+        <div class="box">
+            <% if (msg) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= msg %>
+                  </div>
+            <% } %>
+            <form method="post">
+                <div class="mb-3">
+                  <label for="temperature_higher">Temperature Alarm Lower Limit (°C)</label>
+                  <input type="number" class="form-control" id="temperature_higher" name="temperature_lower_limit" placeholder="Enter temperature limit" min="-50" max="50" step="0.1">
+                  <small class="form-text text-muted">Enter a value between -50°C and 50°C with a precision of 0.1°C.</small>
+                </div>
+
+                <div class="mb-3">
+                  <label for="temperature_higher">Temperature Alarm Higher Limit (°C)</label>
+                  <input type="number" class="form-control" id="temperature_higher" name="temperature_higher_limit" placeholder="Enter temperature limit" min="-50" max="50" step="0.1">
+                  <small class="form-text text-muted">Enter a value between -50°C and 50°C with a precision of 0.1°C.</small>
+                </div>
+
+                <div class="mb-3">
+                  <label for="humidity_lower">Humidity Alarm Lower Limit (%)</label>
+                  <input type="number" class="form-control" id="humidity_lower" name="humidity_lower_limit" placeholder="Enter humidity limit" min="0" max="100" step="1">
+                  <small class="form-text text-muted">Enter a value between 0% and 100% with a precision of 1%.</small>
+                </div>
+
+                <div class="mb-3">
+                  <label for="humidity_higher">Humidity Alarm Higher Limit (%)</label>
+                  <input type="number" class="form-control" id="humidity_higher" name="humidity_higher_limit" placeholder="Enter humidity limit" min="0" max="100" step="1">
+                  <small class="form-text text-muted">Enter a value between 0% and 100% with a precision of 1%.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="fan">Fan Manual Control</label>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="fan" name="fan_manual">
+                        <label class="custom-control-label" for="fan">Enable manual control</label>
+                    </div>
+                    <small class="form-text text-muted">Toggle to enable or disable manual control of fan</small>
+                </div>
+                
+                
+                <button type="submit" class="btn btn-primary">Save</button>
+              </form>
+        </div>
+    </div>
+</body>
+</html> 
