@@ -4,6 +4,7 @@ const login = require('../modules/auth/login');
 const register = require('../modules/auth/register');
 const trends = require('../modules/trends');
 const settings = require('../modules/settings');
+const Settings = require('../models/Settings');
 
 const router = express.Router();
 
@@ -33,8 +34,9 @@ router.get('/logout', validate_token, (req, res)=>{
 router.get('/trends', validate_token, (req, res)=>{
     req.user ? res.render('trends', {user: req.user}) : res.redirect('/login');
 })
-router.get('/settings', validate_token, (req, res)=>{
-    req.user ? res.render('settings', {user: req.user, msg: null}) : res.redirect('/login');
+router.get('/settings', validate_token, async (req, res)=>{
+    const _settings = await Settings.findOne();
+    req.user ? res.render('settings', {user: req.user, msg: null, settings: _settings}) : res.redirect('/login');
 })
 
 

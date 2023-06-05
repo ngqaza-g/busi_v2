@@ -9,17 +9,15 @@ const mqttClient = mqtt.connect('mqtt://127.0.0.1');
 
 mqttClient.on('connect', async ()=>{
     console.log("Connected to an MQTT Broker");
-    const settings = await Settings.find();
-    const { temperature_higher_limit, temperature_lower_limit, humidity_higher_limit, humidity_lower_limit, fan_manual} = settings;
+    mqttClient.subscribe('updates');
+    const settings = await Settings.findOne();
+    const { temperature_higher_limit, temperature_lower_limit, humidity_limit, fan_manual} = settings;
     mqttClient.publish('alarm_settings', JSON.stringify({       
         temperature_higher_limit,
         temperature_lower_limit, 
-        humidity_higher_limit, 
-        humidity_lower_limit, 
+        humidity_limit,  
         fan_manual: fan_manual ? true : false
-    }), retain=true);
-    mqttClient.subscribe('updates');
-
+    }), opts={retain:true});
 });
 
 mqttClient.on('message', async (topic, message)=>{
@@ -37,9 +35,6 @@ mqttClient.on('message', async (topic, message)=>{
     }
 
 });
-
-
-
 
 async function handleAlarms(data){
     const { temperature, humidity, temperature_led, humidity_led, smoke_led } = data; 

@@ -7,10 +7,7 @@ const settingSchema = new mongoose.Schema({
     temperature_lower_limit : {
         type: Number
     },
-    humidity_higher_limit:{
-        type: Number
-    },
-    humidity_higher_limit:{
+    humidity_limit:{
         type: Number
     },
     fan_manual:{

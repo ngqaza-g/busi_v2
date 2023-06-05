@@ -3,14 +3,13 @@ const Settings = require('../models/Settings');
 
 
 module.exports = async (req, res)=>{
-    const { temperature_higher_limit, temperature_lower_limit, humidity_higher_limit, humidity_lower_limit, fan_manual} = req.body;
-    const settings = await Settings.find();
+    const { temperature_higher_limit, temperature_lower_limit, humidity_limit, fan_manual} = req.body;
+    let settings = await Settings.find();
     if(settings.length > 0){
        const update = await Settings.updateMany({
             temperature_higher_limit,
             temperature_lower_limit, 
-            humidity_higher_limit, 
-            humidity_lower_limit, 
+            humidity_limit,  
             fan_manual: fan_manual ? true : false
         });
        console.log(update);
@@ -18,18 +17,18 @@ module.exports = async (req, res)=>{
         await Settings.create({
             temperature_higher_limit,
             temperature_lower_limit, 
-            humidity_higher_limit, 
-            humidity_lower_limit, 
+            humidity_limit, 
             fan_manual: fan_manual ? true : false
         })
     }
-    mqttClient.publish('alarm_settings', JSON.stringify({       
+    mqttClient.publish(topic = 'alarm_settings', payload= JSON.stringify({       
         temperature_higher_limit,
         temperature_lower_limit, 
-        humidity_higher_limit, 
-        humidity_lower_limit, 
+        humidity_limit,  
         fan_manual: fan_manual ? true : false
     }), retain=true);
 
-    res.render('settings', {user: req.user, msg: "Updated"});
+    settings = await Settings.findOne();
+
+    res.render('settings', {user: req.user, msg: "Updated", settings: settings});
 }
