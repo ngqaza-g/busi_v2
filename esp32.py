@@ -28,6 +28,7 @@ mqtt_server ="192.168.137.1"
 last_message = 0
 message_interval = 2 # send messages every 30s
 counter = 0
+client = None
 
 
 # Measure Temperature and Humidity
@@ -102,7 +103,7 @@ while True:
             if(temperature > temperature_higher_limit):
                 temperature_led = True
                 servo_motor.move(90) # Pressed position. Adjust this value
-                sleep(2)
+                time.sleep(2)
                 servo_motor.move(0) # Initial Position
             elif temperature < temperature_lower_limit:
                 temperature_led = False
